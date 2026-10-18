@@ -1,0 +1,99 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fa;
+    color: #222;
+}
+
+header {
+    background-color: #b71c1c;
+    color: white;
+    padding: 22px 40px;
+}
+
+header h1 {
+    font-size: 30px;
+}
+
+header p {
+    margin-top: 8px;
+}
+
+main {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+main h2 {
+    font-size: 34px;
+    margin-bottom: 18px;
+}
+
+main p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+button {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #8e0000;
+}
+
+.emergency-form {
+    background-color: white;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.emergency-form h2 {
+    color: #b71c1c;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.emergency-form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.emergency-form input,
+.emergency-form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.emergency-form button {
+    width: 100%;
+    margin-top: 25px;
+}
+
+#requestResult {
+    margin-top: 15px;
+    color: #b71c1c;
+    font-weight: bold;
+}

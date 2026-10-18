@@ -1,0 +1,854 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Registry | LifeLine AI</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #F5F0FA;
+            color: #3D2B50;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #32113F;
+            color: white;
+            padding: 28px 18px;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .tagline {
+            color: #D5BCE6;
+            font-size: 11px;
+            margin-bottom: 38px;
+        }
+
+        .section-label {
+            color: #BBA4CA;
+            font-size: 11px;
+            font-weight: 700;
+            margin: 25px 12px 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 13px 14px;
+            margin: 7px 0;
+            border-radius: 9px;
+            color: #E8DCEF;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #663D78;
+            color: white;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 32px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            font-size: 27px;
+            font-weight: 800;
+            color: #452456;
+        }
+
+        .subtitle {
+            color: #887593;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #9272AB;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 17px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            border: 1px solid #E9DDF1;
+            box-shadow: 0 4px 14px #4B2A5A0A;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #8D7B98;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            color: #9272AB;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .registry {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #E9DDF1;
+            box-shadow: 0 4px 14px #4B2A5A0A;
+        }
+
+        .registry-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: #452456;
+        }
+
+        .count {
+            font-size: 12px;
+            color: #8D7B98;
+            margin-top: 7px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filters input,
+        .filters select {
+            padding: 12px;
+            border: 1px solid #E3D5EC;
+            border-radius: 8px;
+            background: #FCFAFE;
+            color: #493653;
+            font-size: 12px;
+            outline: none;
+        }
+
+        .filters input {
+            flex: 1;
+            min-width: 190px;
+        }
+
+        .filters select {
+            min-width: 145px;
+        }
+
+        .filters input:focus,
+        .filters select:focus {
+            border-color: #9272AB;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+        }
+
+        th {
+            background: #F5EFF9;
+            color: #765D86;
+            font-size: 11px;
+            text-align: left;
+            padding: 15px 12px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 16px 12px;
+            border-bottom: 1px solid #F0E8F5;
+            font-size: 12px;
+            color: #594667;
+        }
+
+        tbody tr:hover {
+            background: #FCF9FE;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .critical {
+            background: #FCE4EA;
+            color: #B83256;
+        }
+
+        .high {
+            background: #FFF0D9;
+            color: #A86612;
+        }
+
+        .normal {
+            background: #E9E1F8;
+            color: #7650A7;
+        }
+
+        .low {
+            background: #E0F4E8;
+            color: #28784D;
+        }
+
+        .pending {
+            background: #FFF0D9;
+            color: #A86612;
+        }
+
+        .resolved {
+            background: #E0F4E8;
+            color: #28784D;
+        }
+
+        .other-status {
+            background: #E9E1F8;
+            color: #7650A7;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: #907D9C;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            font-size: 12px;
+            color: #7650A7;
+        }
+
+        .refresh-btn {
+            padding: 10px 14px;
+            background: #EEE5F6;
+            color: #65447C;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .refresh-btn:hover {
+            background: #E2D3F0;
+        }
+
+        .status-select {
+            padding: 8px 12px;
+            border: 1px solid #D8C7E8;
+            border-radius: 10px;
+            background-color: #F8F3FC;
+            color: #654580;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        .status-select:hover {
+            border-color: #A98BC4;
+            background-color: #F0E6F8;
+        }
+
+        .status-select:focus {
+            border-color: #9272AB;
+            box-shadow: 0 0 0 3px rgba(146, 114, 171, 0.15);
+        }
+
+        @media (max-width: 1050px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .tagline {
+                margin-bottom: 18px;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="logo">LifeLine AI</div>
+        <div class="tagline">The Emergency Resource Intelligence Network</div>
+
+        <div class="section-label">Main Menu</div>
+
+        <a href="dashboard.html" class="nav-item">
+            ◈ &nbsp; Command Center
+        </a>
+
+        <a href="index.html" class="nav-item">
+            ＋ &nbsp; New Emergency Request
+        </a>
+
+        <a href="requests.html" class="nav-item active">
+            ▤ &nbsp; Request Registry
+        </a>
+
+        <a href="dashboard.html#analytics" class="nav-item">
+            ◉ &nbsp; Resource Analytics
+        </a>
+
+        <a href="http://127.0.0.1:8000/docs" target="_blank"
+           class="nav-item">
+            ↗ &nbsp; API Services
+        </a>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <h1>Request Registry</h1>
+                <p class="subtitle">
+                    View, search and monitor all recorded emergency resource requests.
+                </p>
+            </div>
+
+            <a href="dashboard.html" class="back-btn">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-label">Total Requests</div>
+                <div class="stat-value" id="totalCount">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Pending Requests</div>
+                <div class="stat-value" id="pendingCount">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Critical Requests</div>
+                <div class="stat-value" id="criticalCount">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Locations Served</div>
+                <div class="stat-value" id="locationCount">0</div>
+            </div>
+        </section>
+
+        <section class="registry">
+
+            <div class="registry-heading">
+                <div>
+                    <h2>Emergency Requests</h2>
+                    <p class="count" id="resultCount">Loading requests...</p>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="refresh-btn" onclick="loadRequests()">
+                        ↻ Refresh Data
+                    </button>
+
+                    <button class="refresh-btn" onclick="exportRequestsCSV()">
+                        ↓ Export CSV
+                    </button>
+                </div>
+            </div>
+
+            <div class="filters">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search ID, resource, blood group or location..."
+                    oninput="filterRequests()"
+                >
+
+                <select id="urgencyFilter" onchange="filterRequests()">
+                    <option value="">All Urgencies</option>
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Low">Low</option>
+                </select>
+
+                <select id="statusFilter" onchange="filterRequests()">
+                    <option value="">All Statuses</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Resolved">Resolved</option>
+                    <option value="In Progress">In Progress</option>
+                </select>
+
+                <select id="resourceFilter" onchange="filterRequests()">
+                    <option value="">All Resources</option>
+                    <option value="Blood">Blood</option>
+                    <option value="Medical Supplies">Medical Supplies</option>
+                    <option value="Ambulance">Ambulance</option>
+                </select>
+
+            </div>
+
+            <p class="message" id="message"></p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Request ID</th>
+                            <th>Resource</th>
+                            <th>Blood Group</th>
+                            <th>Units</th>
+                            <th>Location</th>
+                            <th>Urgency</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="requestTable">
+                        <tr>
+                            <td colspan="7" class="empty">
+                                Loading emergency requests...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        const API_URL = "http://127.0.0.1:8000/requests";
+
+        let allRequests = [];
+
+        // Read the urgency filter from the URL.
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlUrgency = urlParams.get("urgency");
+
+        // Apply the URL filter when the page first loads.
+        if (urlUrgency) {
+            const allowedUrgencies = ["Critical", "High", "Normal", "Low"];
+
+            const matchingUrgency = allowedUrgencies.find(
+                urgency => urgency.toLowerCase() === urlUrgency.toLowerCase()
+            );
+
+            if (matchingUrgency) {
+                document.getElementById("urgencyFilter").value =
+                    matchingUrgency;
+            }
+        }
+
+        async function loadRequests() {
+            const table = document.getElementById("requestTable");
+            const message = document.getElementById("message");
+
+            message.textContent =
+                "Connecting to the emergency database...";
+
+            try {
+                const response = await fetch(API_URL);
+
+                if (!response.ok) {
+                    throw new Error("Could not retrieve requests.");
+                }
+
+                const data = await response.json();
+
+                if (!Array.isArray(data.requests)) {
+                    throw new Error("Unexpected response from the server.");
+                }
+
+                allRequests = data.requests;
+
+                updateStats();
+                filterRequests();
+
+                message.textContent =
+                    "Request data loaded successfully.";
+
+            } catch (error) {
+                table.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="empty">
+                            Unable to load requests. Make sure your FastAPI
+                            backend is running at http://127.0.0.1:8000.
+                        </td>
+                    </tr>
+                `;
+
+                document.getElementById("resultCount").textContent =
+                    "Unable to connect";
+
+                message.textContent = "";
+            }
+        }
+
+        function updateStats() {
+            document.getElementById("totalCount").textContent =
+                allRequests.length;
+
+            document.getElementById("pendingCount").textContent =
+                allRequests.filter(request =>
+                    String(request.status || "").toLowerCase() === "pending"
+                ).length;
+
+            document.getElementById("criticalCount").textContent =
+                allRequests.filter(request =>
+                    String(request.urgency || "Normal").toLowerCase() ===
+                    "critical"
+                ).length;
+
+            const locations = new Set(
+                allRequests
+                    .map(request =>
+                        String(request.location || "").trim().toLowerCase()
+                    )
+                    .filter(location => location !== "")
+            );
+
+            document.getElementById("locationCount").textContent =
+                locations.size;
+        }
+
+        function filterRequests() {
+            const search = document.getElementById("searchInput")
+                .value.toLowerCase().trim();
+
+            const urgency =
+                document.getElementById("urgencyFilter").value;
+
+            const status =
+                document.getElementById("statusFilter").value;
+
+            const resource =
+                document.getElementById("resourceFilter").value;
+
+            const filtered = allRequests.filter(request => {
+                const id = String(
+                    request.request_code || `LL-${String(request.id).padStart(4, "0")}`
+                );
+
+                const resourceName =
+                    String(request.resource || "");
+
+                const bloodGroup =
+                    String(request.blood_group || "");
+
+                const location =
+                    String(request.location || "");
+
+                const requestUrgency =
+                    String(request.urgency || "Normal");
+
+                const requestStatus =
+                    String(request.status || "Pending");
+
+                const matchesSearch =
+                    id.toLowerCase().includes(search) ||
+                    resourceName.toLowerCase().includes(search) ||
+                    bloodGroup.toLowerCase().includes(search) ||
+                    location.toLowerCase().includes(search);
+
+                const matchesUrgency =
+                    !urgency ||
+                    requestUrgency.toLowerCase() === urgency.toLowerCase();
+
+                const matchesStatus =
+                    !status ||
+                    requestStatus.toLowerCase() === status.toLowerCase();
+
+                const matchesResource =
+                    !resource ||
+                    resourceName.toLowerCase() === resource.toLowerCase();
+
+                return matchesSearch &&
+                       matchesUrgency &&
+                       matchesStatus &&
+                       matchesResource;
+            });
+
+            // Show the most urgent requests first.
+            const priorityOrder = {
+                critical: 1,
+                high: 2,
+                normal: 3,
+                low: 4
+            };
+
+            filtered.sort((a, b) => {
+                const urgencyA =
+                    String(a.urgency || "Normal").toLowerCase();
+
+                const urgencyB =
+                    String(b.urgency || "Normal").toLowerCase();
+
+                const priorityA = priorityOrder[urgencyA] ?? 3;
+                const priorityB = priorityOrder[urgencyB] ?? 3;
+
+                return priorityA - priorityB;
+            });
+
+            renderTable(filtered);
+
+            document.getElementById("resultCount").textContent =
+                `Showing ${filtered.length} of ${allRequests.length} requests`;
+        }
+
+        function renderTable(requests) {
+            const table = document.getElementById("requestTable");
+
+            if (requests.length === 0) {
+                table.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="empty">
+                            No matching emergency requests found.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            table.innerHTML = requests.map(request => {
+                const id =
+                    request.request_id ?? request.id ?? "—";
+
+                const urgency = request.urgency || "Normal";
+                const status = request.status || "Pending";
+
+                const urgencyClass = {
+                    Critical: "critical",
+                    High: "high",
+                    Normal: "normal",
+                    Low: "low"
+                }[urgency] || "normal";
+
+                return `
+                    <tr>
+                        <td>#${escapeHTML(id)}</td>
+
+                        <td>${escapeHTML(request.resource || "—")}</td>
+
+                        <td>${escapeHTML(request.blood_group || "—")}</td>
+
+                        <td>${escapeHTML(request.units ?? "—")}</td>
+
+                        <td>${escapeHTML(request.location || "—")}</td>
+
+                        <td>
+                            <span class="badge ${urgencyClass}">
+                                ${escapeHTML(urgency)}
+                            </span>
+                        </td>
+
+                        <td>
+                            <select
+                                class="status-select"
+                                onchange="updateStatus(${Number(id)}, this.value)"
+                            >
+                                <option value="Pending"
+                                    ${status === "Pending" ? "selected" : ""}>
+                                    Pending
+                                </option>
+
+                                <option value="In Progress"
+                                    ${status === "In Progress" ? "selected" : ""}>
+                                    In Progress
+                                </option>
+
+                                <option value="Resolved"
+                                    ${status === "Resolved" ? "selected" : ""}>
+                                    Resolved
+                                </option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        async function updateStatus(requestId, newStatus) {
+            try {
+                const response = await fetch(
+                    `http://127.0.0.1:8000/requests/${requestId}/status`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            status: newStatus
+                        })
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.detail || "Could not update status"
+                    );
+                }
+
+                alert(
+                    `Request #${requestId} updated to ${newStatus}.`
+                );
+
+                await loadRequests();
+
+            } catch (error) {
+                alert("Status update failed: " + error.message);
+                await loadRequests();
+            }
+        }
+
+        function exportRequestsCSV() {
+            if (allRequests.length === 0) {
+                alert("No requests available to export.");
+                return;
+            }
+
+            const headers = [
+                "Request ID",
+                "Resource",
+                "Blood Group",
+                "Units",
+                "Location",
+                "Urgency",
+                "Status"
+            ];
+
+            const rows = allRequests.map(request => [
+                request.request_id ?? request.id ?? "",
+                request.resource ?? "",
+                request.blood_group || "N/A",
+                request.units ?? "",
+                request.location ?? "",
+                request.urgency || "Normal",
+                request.status || "Pending"
+            ]);
+
+            const csv = [headers, ...rows]
+                .map(row =>
+                    row.map(value =>
+                        `"${String(value).replace(/"/g, '""')}"`
+                    ).join(",")
+                )
+                .join("\r\n");
+
+            const blob = new Blob(["\uFEFF" + csv], {
+                type: "text/csv;charset=utf-8;"
+            });
+
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+
+            link.href = url;
+            link.download = "lifeline-emergency-requests.csv";
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            URL.revokeObjectURL(url);
+        }
+
+        function escapeHTML(value) {
+            return String(value).replace(/[&<>"']/g, character => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            })[character]);
+        }
+
+        loadRequests();
+    </script>
+
+</body>
+</html>

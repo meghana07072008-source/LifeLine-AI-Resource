@@ -1,0 +1,1810 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLine AI | Command Center</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #F5F0FA;
+            color: #35283F;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 245px;
+            background: #34283F;
+            border-right: 1px solid #493951;
+            padding: 28px 18px;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 10px 35px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #B89ACF, #9273AF);
+            color: #FFFFFF;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px #21182A55;
+        }
+
+        .brand h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 19px;
+            color: #F8F1FF;
+        }
+
+        .brand p {
+            color: #C3B2D0;
+            font-size: 11px;
+            margin-top: 3px;
+        }
+
+        .nav-title {
+            color: #AA96BA;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.6px;
+            padding: 12px;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 13px 14px;
+            margin: 4px 0;
+            border-radius: 9px;
+            color: #D4C7DF;
+            text-decoration: none;
+            font-size: 13px;
+            transition: background 0.25s, color 0.25s;
+        }
+
+        .nav-item:hover {
+            background: #493852;
+            color: #FFFFFF;
+        }
+
+        .nav-item.active {
+            background: #594267;
+            color: #F3DFFF;
+            border: 1px solid #826A96;
+        }
+
+        .nav-item span {
+            display: inline-block;
+            width: 28px;
+            font-size: 16px;
+        }
+
+        .side-status {
+            margin-top: 45px;
+            background: #41334A;
+            border: 1px solid #66516F;
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .side-status p {
+            color: #C9B5D7;
+            font-size: 11px;
+        }
+
+        .online {
+            color: #55886A;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 30px;
+            background: #F5F0FA;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .eyebrow {
+            color: #9574AE;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: #3F304B;
+        }
+
+        h1 {
+            font-size: 29px;
+            letter-spacing: -0.8px;
+        }
+
+        .subtitle {
+            color: #887993;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .live-badge {
+            border: 1px solid #C3DEC9;
+            color: #547E68;
+            background: #E7F2E9;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-size: 11px;
+        }
+
+        .live-dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            background: #65AE82;
+            border-radius: 50%;
+            margin-right: 7px;
+        }
+
+        .date {
+            color: #665572;
+            background: #FFFFFF;
+            border: 1px solid #E5DAED;
+            padding: 10px 13px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card, .panel {
+            background: #FFFFFF;
+            border: 1px solid #E8DDEF;
+            border-radius: 13px;
+            box-shadow: 0 5px 18px #4C315B0A;
+        }
+
+        .stat-card {
+            padding: 21px;
+            min-width: 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 9px 24px #4C315B12;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            color: #85738F;
+            font-size: 12px;
+        }
+
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            background: #F0E6F7;
+            color: #9272AB;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .stat-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 20px;
+            color: #9272AB;
+        }
+
+        .stat-note {
+            color: #9A8BA3;
+            font-size: 11px;
+            margin-top: 7px;
+        }
+
+        .middle {
+            display: grid;
+            grid-template-columns: 1.55fr 1fr;
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .panel {
+            padding: 22px;
+        }
+
+        .panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .panel-heading h2 {
+            font-size: 16px;
+        }
+
+        .panel-heading p {
+            color: #95849F;
+            font-size: 11px;
+            margin-top: 6px;
+        }
+
+        .mini-label {
+            color: #806392;
+            font-size: 11px;
+            background: #F3EAF8;
+            border: 1px solid #E4D4EE;
+            padding: 7px 10px;
+            border-radius: 7px;
+            white-space: nowrap;
+        }
+
+        .chart {
+            height: 175px;
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+            gap: 12px;
+            border-bottom: 1px solid #E6DCEC;
+            padding: 0 5px;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent 0,
+                transparent 42px,
+                #EEE5F3 43px,
+                transparent 44px
+            );
+        }
+
+        .bar-group {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: end;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .bar {
+            width: min(36px, 80%);
+            background: linear-gradient(180deg, #C7A6DC, #9876B6);
+            border-radius: 6px 6px 0 0;
+            min-height: 5px;
+        }
+
+        .bar.alt {
+            background: linear-gradient(180deg, #A8B7DA, #788DBD);
+        }
+
+        .bar-label {
+            color: #8D7B98;
+            font-size: 10px;
+            padding-bottom: 10px;
+            text-align: center;
+            overflow-wrap: anywhere;
+        }
+
+        .resource-list {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .resource-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .resource-top span:first-child {
+            color: #55445F;
+        }
+
+        .resource-top span:last-child {
+            color: #95849F;
+            text-align: right;
+        }
+
+        .track {
+            width: 100%;
+            height: 7px;
+            background: #EEE6F3;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #B99ACF, #9473B0);
+            border-radius: 20px;
+        }
+
+        .fill.blue {
+            background: #93A8D0;
+        }
+
+        .fill.green-fill {
+            background: #8CC3A1;
+        }
+
+        .resource-footnote {
+            color: #93849B;
+            font-size: 11px;
+            margin-top: 20px;
+            line-height: 1.7;
+        }
+
+        .table-panel {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 23px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            background: #FFFFFF;
+        }
+
+        .table-header h2 {
+            font-size: 17px;
+        }
+
+        .table-header p {
+            color: #95849F;
+            font-size: 11px;
+            margin-top: 6px;
+        }
+
+        .refresh-btn {
+            color: #FFFFFF;
+            background: #806394;
+            border: 1px solid #806394;
+            border-radius: 8px;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .refresh-btn:hover {
+            background: #6C507F;
+            transform: translateY(-1px);
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+            background: #FFFFFF;
+            border: 1px solid #E8DDEF;
+            border-top: none;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-section input,
+        .filter-section select {
+            padding: 11px 14px;
+            border: 1px solid #E0D3EA;
+            border-radius: 8px;
+            background: #FAF7FD;
+            color: #483553;
+            font-family: inherit;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .filter-section input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-section select {
+            min-width: 160px;
+            cursor: pointer;
+        }
+
+        .filter-section input:focus,
+        .filter-section select:focus {
+            border-color: #9272AB;
+            box-shadow: 0 0 0 3px #9272AB20;
+        }
+
+        .filter-section input::placeholder {
+            color: #A394AD;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            text-align: left;
+        }
+
+        th {
+            background: #EEE5F4;
+            color: #806B8D;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 15px 20px;
+        }
+
+        td {
+            border-top: 1px solid #EFE6F3;
+            padding: 17px 20px;
+            font-size: 12px;
+            color: #55445F;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #FAF6FD;
+        }
+
+        .request-id {
+            color: #9673AE;
+            font-weight: 700;
+        }
+
+        .resource-tag {
+            background: #F0E6F6;
+            color: #805D99;
+            padding: 6px 9px;
+            border-radius: 6px;
+            font-size: 10px;
+        }
+
+        .status {
+            display: inline-block;
+            color: #8A6A36;
+            background: #FFF7E5;
+            border: 1px solid #EAD8A9;
+            padding: 6px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+        }
+
+        .urgency {
+            display: inline-block;
+            padding: 6px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            border: 1px solid;
+        }
+
+        .urgency.critical {
+            color: #C93653;
+            background: #FFF0F2;
+            border-color: #F3C2CC;
+        }
+
+        .urgency.high {
+            color: #A65B22;
+            background: #FFF3E6;
+            border-color: #F1D2B2;
+        }
+
+        .urgency.normal {
+            color: #526EA6;
+            background: #EDF2FF;
+            border-color: #CEDAF7;
+        }
+
+        .urgency.low {
+            color: #397853;
+            background: #EAF7EE;
+            border-color: #C7E6D0;
+        }
+
+        .empty {
+            color: #95849F;
+            text-align: center;
+            padding: 32px;
+        }
+
+        .bottom {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            color: #9A8AA4;
+            font-size: 10px;
+            padding: 24px 3px 0;
+        }
+
+        .critical-alert {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 20px;
+            margin: 0 0 24px;
+            background: #FFF0F2;
+            border: 1px solid #F3C2CC;
+            border-left: 5px solid #C93653;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px #C9365310;
+        }
+
+        .alert-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #F9DCE3;
+            color: #B83256;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-content h3 {
+            color: #B83256;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .alert-content p {
+            color: #80505F;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .alert-button {
+            flex-shrink: 0;
+            padding: 10px 13px;
+            border-radius: 8px;
+            background: #C93653;
+            color: white;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .alert-button:hover {
+            background: #A92743;
+        }
+
+        @media (max-width: 1350px) {
+            .stats {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .middle {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 18px;
+            }
+
+            .brand {
+                padding-bottom: 15px;
+            }
+
+            .nav-title,
+            .side-status {
+                display: none;
+            }
+
+            .nav-item {
+                display: inline-block;
+                padding: 10px;
+            }
+
+            .main {
+                padding: 20px 14px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .stats {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-value {
+                font-size: 26px;
+            }
+
+            .bottom {
+                flex-direction: column;
+            }
+
+            .filter-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-section input,
+            .filter-section select {
+                width: 100%;
+                box-sizing: border-box;
+                min-width: 0;
+            }
+
+            .critical-alert {
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .alert-button {
+                margin-left: 55px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">+</div>
+            <div>
+                <h2>LifeLine AI</h2>
+                <p>EMERGENCY INTELLIGENCE</p>
+            </div>
+        </div>
+
+        <div class="nav-title">WORKSPACE</div>
+
+        <a href="dashboard.html" class="nav-item active">
+            <span>▦</span> Command Center
+        </a>
+
+        <a href="index.html" class="nav-item">
+            <span>＋</span> New Emergency Request
+        </a>
+
+        <a href="requests.html" class="nav-item">
+            <span>▤</span> Request Registry
+        </a>
+
+        <a href="#analytics" class="nav-item">
+            <span>◷</span> Resource Analytics
+        </a>
+
+        <div class="nav-title" style="margin-top: 28px;">SYSTEM</div>
+
+        <a href="http://127.0.0.1:8000/docs"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="nav-item">
+            <span>⌘</span> API Services
+        </a>
+
+        <div class="side-status">
+            <p>BACKEND CONNECTIVITY</p>
+            <div class="online" id="connectionStatus">
+                ● Checking services...
+            </div>
+        </div>
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+            <div>
+                <div class="eyebrow">Emergency operations / Overview</div>
+                <h1>Command Center</h1>
+                <p class="subtitle">
+                    Monitor requests and review emergency resource demand.
+                </p>
+            </div>
+
+            <div class="top-right">
+                <div class="live-badge">
+                    <span class="live-dot"></span>API MONITOR
+                </div>
+                <div class="date" id="currentDate">Loading date...</div>
+            </div>
+        </div>
+
+        <!-- Critical Emergency Alert -->
+        <div id="criticalAlert" class="critical-alert" style="display: none;">
+            <div class="alert-icon">!</div>
+            <div class="alert-content">
+                <h3 id="criticalAlertTitle">Critical Emergency Alert</h3>
+                <p id="criticalAlertMessage"></p>
+            </div>
+            <a href="requests.html?urgency=Critical" class="alert-button">
+                View Critical Requests →
+            </a>
+        </div>
+
+        <!-- Statistics -->
+        <section class="stats">
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    Total Requests <span class="stat-icon">▤</span>
+                </div>
+                <div class="stat-value" id="totalRequests">—</div>
+                <div class="stat-note">All requests currently stored</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    Pending Requests <span class="stat-icon">◷</span>
+                </div>
+                <div class="stat-value" id="pendingRequests">—</div>
+                <div class="stat-note">Awaiting resource allocation</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    Critical Requests <span class="stat-icon">!</span>
+                </div>
+                <div class="stat-value" id="criticalRequests">—</div>
+                <div class="stat-note">Requests marked critical</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    Blood Requests <span class="stat-icon">✚</span>
+                </div>
+                <div class="stat-value" id="bloodRequests">—</div>
+                <div class="stat-note">Requests marked as blood</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    Locations Served <span class="stat-icon">⌖</span>
+                </div>
+                <div class="stat-value" id="locationsServed">—</div>
+                <div class="stat-note">Distinct requested locations</div>
+            </div>
+
+        </section>
+
+        <!-- Resource Analytics -->
+        <section class="middle" id="analytics">
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Resource Demand</h2>
+                        <p>Distribution of submitted requests by resource type</p>
+                    </div>
+                    <span class="mini-label">LIVE DATA</span>
+                </div>
+
+                <div class="chart" id="demandChart">
+                    <div class="empty">Loading resource data...</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Request Breakdown</h2>
+                        <p>Share of each requested resource</p>
+                    </div>
+                </div>
+
+                <div class="resource-list" id="resourceBreakdown">
+                    <div class="empty">Loading breakdown...</div>
+                </div>
+
+                <p class="resource-footnote">
+                    Figures reflect requests recorded by this application.
+                    They do not represent verified real-world resource availability.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- Urgency Breakdown -->
+        <section class="panel" style="margin-bottom: 25px;">
+            <div class="panel-heading">
+                <div>
+                    <h2>Urgency Breakdown</h2>
+                    <p>Distribution of emergency requests by urgency level</p>
+                </div>
+                <span class="mini-label">LIVE DATA</span>
+            </div>
+
+            <div class="resource-list" id="urgencyBreakdown">
+                <div class="empty">Loading urgency data...</div>
+            </div>
+        </section>
+
+        <!-- Location-wise Demand -->
+        <section class="panel" style="margin-bottom: 25px;">
+            <div class="panel-heading">
+                <div>
+                    <h2>Location-wise Demand</h2>
+                    <p>Emergency requests grouped by location</p>
+                </div>
+                <span class="mini-label">LIVE DATA</span>
+            </div>
+
+            <div class="resource-list" id="locationBreakdown">
+                <div class="empty">Loading location data...</div>
+            </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="panel" style="margin-bottom: 25px;">
+            <div class="panel-heading">
+                <div>
+                    <h2>Recent Activity</h2>
+                    <p>Latest emergency requests and their status</p>
+                </div>
+                <span class="mini-label">LIVE DATA</span>
+            </div>
+
+            <div id="recentActivity">
+                <div class="empty">Loading recent activity...</div>
+            </div>
+        </section>
+
+        <!-- Critical Summary -->
+        <section class="panel" style="margin-bottom: 25px;">
+            <div class="panel-heading">
+                <div>
+                    <h2>Critical Emergency Summary</h2>
+                    <p>Unresolved critical requests requiring attention</p>
+                </div>
+                <span class="mini-label">PRIORITY</span>
+            </div>
+
+            <div id="criticalSummary">
+                <div class="empty">Loading critical requests...</div>
+            </div>
+        </section>
+
+        <!-- Priority Overview -->
+        <section class="panel" style="margin-bottom: 25px;">
+            <div class="panel-heading">
+                <div>
+                    <h2>Priority Overview</h2>
+                    <p>Request counts by urgency level</p>
+                </div>
+                <span class="mini-label">LIVE DATA</span>
+            </div>
+
+            <div id="priorityOverview"
+                 style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:15px;">
+                <div class="empty">Loading priority data...</div>
+            </div>
+        </section>
+
+        <!-- Smart Resource Matching -->
+        <section class="panel" style="margin-bottom: 25px;">
+            <div class="panel-heading">
+                <div>
+                    <h2>Smart Resource Matching</h2>
+                    <p>Unresolved requests ranked by urgency for human review</p>
+                </div>
+                <span class="mini-label">AI PRIORITY</span>
+            </div>
+
+            <div id="smartMatching">
+                <div class="empty">Analyzing emergency requests...</div>
+            </div>
+
+            <p class="resource-footnote">
+                Priority scores are rule-based guidance, not a confirmation that a
+                resource is available. Verify details before taking action.
+            </p>
+        </section>
+
+        <!-- Request Registry -->
+        <section class="panel table-panel" id="requests">
+
+            <div class="table-header">
+                <div>
+                    <h2>Emergency Request Registry</h2>
+                    <p>Requests received by the LifeLine AI backend</p>
+                </div>
+
+                <button class="refresh-btn" onclick="loadDashboard()">
+                    ↻ Refresh Data
+                </button>
+            </div>
+
+            <div class="filter-section">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="🔍 Search location or resource..."
+                    oninput="filterRequests()">
+
+                <select id="urgencyFilter" onchange="filterRequests()">
+                    <option value="">All Urgency Levels</option>
+                    <option value="Critical">Critical</option>
+                    <option value="High">High</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Low">Low</option>
+                </select>
+
+                <select id="statusFilter" onchange="filterRequests()">
+                    <option value="">All Statuses</option>
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Request ID</th>
+                            <th>Resource</th>
+                            <th>Blood Group</th>
+                            <th>Units</th>
+                            <th>Location</th>
+                            <th>Urgency</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="requestTable">
+                        <tr>
+                            <td colspan="7" class="empty">Loading requests...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <div class="bottom">
+            <span>LIFELINE AI · EMERGENCY RESOURCE INTELLIGENCE NETWORK</span>
+            <span>Prototype dashboard · Data supplied by local API</span>
+        </div>
+
+    </main>
+</div>
+
+<script>
+    let allRequests = [];
+
+    document.getElementById("currentDate").textContent =
+        new Date().toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+
+function formatLocation(location) {
+    return location
+        .trim()
+        .toLowerCase()
+        .replace(/\b\w/g, letter => letter.toUpperCase());
+}
+
+ 
+
+    // Load data from the FastAPI backend
+    async function loadDashboard() {
+        const connectionStatus =
+            document.getElementById("connectionStatus");
+
+        try {
+            const response =
+                await fetch("http://127.0.0.1:8000/requests");
+
+            if (!response.ok) {
+                throw new Error("API request failed");
+            }
+
+            const data = await response.json();
+
+            const requests = Array.isArray(data.requests)
+                ? data.requests
+                : [];
+
+            allRequests = requests;
+
+            connectionStatus.textContent = "● Connected";
+            connectionStatus.style.color = "#55886A";
+
+            // Dashboard statistics
+            document.getElementById("totalRequests").textContent =
+                data.total_requests ?? requests.length;
+
+            document.getElementById("pendingRequests").textContent =
+                requests.filter(request =>
+                    String(request.status || "Pending").toLowerCase()
+                    === "pending"
+                ).length;
+
+            // Counts all critical requests, including resolved ones
+            document.getElementById("criticalRequests").textContent =
+                requests.filter(request =>
+                    String(request.urgency || "Normal").toLowerCase()
+                    === "critical"
+                ).length;
+
+            document.getElementById("bloodRequests").textContent =
+                requests.filter(request =>
+                    String(request.resource || "").toLowerCase()
+                    === "blood"
+                ).length;
+
+            document.getElementById("locationsServed").textContent =
+                new Set(
+                    requests
+                        .map(request =>
+                            String(request.location || "")
+                                .trim()
+                                .toLowerCase()
+                        )
+                        .filter(Boolean)
+                ).size;
+
+            // Render every dashboard section
+            filterRequests();
+            renderAnalytics(requests);
+            renderUrgencyAnalytics(requests);
+            renderLocationAnalytics(requests);
+            renderRecentActivity(requests);
+            renderCriticalSummary(requests);
+            renderPriorityOverview(requests);
+            renderSmartMatching(requests);
+            updateCriticalAlert(requests);
+
+        } catch (error) {
+            console.error("Dashboard loading error:", error);
+
+            connectionStatus.textContent = "● Disconnected";
+            connectionStatus.style.color = "#C93653";
+
+            const emptyMessage =
+                '<div class="empty">No connection to the API. Start the backend and refresh.</div>';
+
+            document.getElementById("totalRequests").textContent = "—";
+            document.getElementById("pendingRequests").textContent = "—";
+            document.getElementById("criticalRequests").textContent = "—";
+            document.getElementById("bloodRequests").textContent = "—";
+            document.getElementById("locationsServed").textContent = "—";
+
+            document.getElementById("demandChart").innerHTML = emptyMessage;
+            document.getElementById("resourceBreakdown").innerHTML = emptyMessage;
+            document.getElementById("urgencyBreakdown").innerHTML = emptyMessage;
+            document.getElementById("locationBreakdown").innerHTML = emptyMessage;
+            document.getElementById("recentActivity").innerHTML = emptyMessage;
+            document.getElementById("criticalSummary").innerHTML = emptyMessage;
+            document.getElementById("priorityOverview").innerHTML = emptyMessage;
+            document.getElementById("smartMatching").innerHTML = emptyMessage;
+
+            allRequests = [];
+            renderTable([]);
+            updateCriticalAlert([]);
+        }
+    }
+
+    // Search and filter the request registry
+    function filterRequests() {
+        const searchText =
+            document.getElementById("searchInput").value
+                .toLowerCase()
+                .trim();
+
+        const urgencyValue =
+            document.getElementById("urgencyFilter").value;
+
+        const statusValue =
+            document.getElementById("statusFilter").value;
+
+        const filteredRequests = allRequests.filter(request => {
+            const location =
+                String(request.location || "").toLowerCase();
+
+            const resource =
+                String(request.resource || "").toLowerCase();
+
+            const urgency = request.urgency || "Normal";
+            const status = request.status || "Pending";
+
+            return (
+                (location.includes(searchText) ||
+                 resource.includes(searchText)) &&
+                (urgencyValue === "" || urgency === urgencyValue) &&
+                (statusValue === "" || status === statusValue)
+            );
+        });
+
+        renderTable(filteredRequests);
+    }
+
+    // Display requests in the registry table
+    function renderTable(requests) {
+        const table = document.getElementById("requestTable");
+
+        if (requests.length === 0) {
+            table.innerHTML =
+                '<tr><td colspan="7" class="empty">No matching emergency requests found.</td></tr>';
+            return;
+        }
+
+        table.innerHTML = requests.slice().reverse().map(request => {
+            const urgency = request.urgency || "Normal";
+            const urgencyClass = String(urgency).toLowerCase();
+
+            const requestId = request.request_code ||
+                `LL-${String(
+                    request.request_id ?? request.id
+                ).padStart(4, "0")}`;
+
+            return `
+                <tr>
+                    <td class="request-id">#${escapeHTML(requestId)}</td>
+
+                    <td>
+                        <span class="resource-tag">
+                            ${escapeHTML(request.resource || "N/A")}
+                        </span>
+                    </td>
+
+                    <td>${escapeHTML(request.blood_group || "N/A")}</td>
+
+                    <td>${Number(request.units) || 0}</td>
+
+                    <td>⌖ ${escapeHTML(formatLocation(request.location || "N/A"))}</td>
+
+                    <td>
+                        <span class="urgency ${escapeHTML(urgencyClass)}">
+                            ${escapeHTML(urgency)}
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="status">
+                            ${escapeHTML(request.status || "Pending")}
+                        </span>
+                    </td>
+                </tr>
+            `;
+        }).join("");
+    }
+
+    // Show an alert when unresolved critical requests exist
+    function updateCriticalAlert(requests) {
+        const alertBox =
+            document.getElementById("criticalAlert");
+
+        const title =
+            document.getElementById("criticalAlertTitle");
+
+        const message =
+            document.getElementById("criticalAlertMessage");
+
+        const criticalRequests = requests.filter(request =>
+            String(request.urgency || "Normal").toLowerCase()
+                === "critical" &&
+            String(request.status || "Pending").toLowerCase()
+                !== "resolved"
+        );
+
+        if (criticalRequests.length === 0) {
+            alertBox.style.display = "none";
+            return;
+        }
+
+        alertBox.style.display = "flex";
+        title.textContent = "Critical Emergency Alert";
+
+        message.textContent =
+            `${criticalRequests.length} unresolved critical request(s) need urgent attention.`;
+
+        alertBox.querySelector(".alert-button").href =
+            "requests.html?urgency=Critical";
+    }
+
+    // Resource demand chart and resource breakdown
+    function renderAnalytics(requests) {
+        const counts = {};
+
+        requests.forEach(request => {
+            const type = request.resource || "Other";
+            counts[type] = (counts[type] || 0) + 1;
+        });
+
+        const entries = Object.entries(counts);
+
+        const chart = document.getElementById("demandChart");
+        const breakdown = document.getElementById("resourceBreakdown");
+
+        if (entries.length === 0) {
+            chart.innerHTML =
+                '<div class="empty">No request data available yet.</div>';
+
+            breakdown.innerHTML =
+                '<div class="empty">Submit a request to view the breakdown.</div>';
+
+            return;
+        }
+
+        const maxCount = Math.max(
+            ...entries.map(entry => entry[1])
+        );
+
+        chart.innerHTML = entries.map(([name, count], index) => {
+            const height = Math.max(
+                8,
+                (count / maxCount) * 130
+            );
+
+            return `
+                <div class="bar-group"
+                     title="${escapeHTML(name)}: ${count} requests">
+
+                    <div class="bar ${index % 2 ? "alt" : ""}"
+                         style="height:${height}px">
+                    </div>
+
+                    <div class="bar-label">
+                        ${escapeHTML(name)}
+                    </div>
+                </div>
+            `;
+        }).join("");
+
+        breakdown.innerHTML = entries.map(([name, count]) => {
+            const percent =
+                Math.round((count / requests.length) * 100);
+
+            const fillClass =
+                name === "Ambulance"
+                    ? "blue"
+                    : name === "Medical Supplies"
+                        ? "green-fill"
+                        : "";
+
+            return `
+                <div>
+                    <div class="resource-top">
+                        <span>${escapeHTML(name)}</span>
+                        <span>${count} · ${percent}%</span>
+                    </div>
+
+                    <div class="track">
+                        <div class="fill ${fillClass}"
+                             style="width:${percent}%">
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    // Show request distribution by urgency
+    function renderUrgencyAnalytics(requests) {
+        const container =
+            document.getElementById("urgencyBreakdown");
+
+        const levels = ["Critical", "High", "Normal", "Low"];
+
+        const counts = {
+            Critical: 0,
+            High: 0,
+            Normal: 0,
+            Low: 0
+        };
+
+        requests.forEach(request => {
+            const urgency = levels.find(level =>
+                level.toLowerCase() ===
+                String(request.urgency || "Normal").toLowerCase()
+            );
+
+            if (urgency) {
+                counts[urgency]++;
+            }
+        });
+
+        if (requests.length === 0) {
+            container.innerHTML =
+                '<div class="empty">No request data available yet.</div>';
+            return;
+        }
+
+        container.innerHTML = levels.map(level => {
+            const count = counts[level];
+
+            const percent =
+                Math.round((count / requests.length) * 100);
+
+            return `
+                <div>
+                    <div class="resource-top">
+                        <span>${level}</span>
+                        <span>${count} · ${percent}%</span>
+                    </div>
+
+                    <div class="track">
+                        <div class="fill" style="width:${percent}%"></div>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    // FIXED: Location-wise demand uses the CSS classes that actually exist
+    function renderLocationAnalytics(requests) {
+        const container =
+            document.getElementById("locationBreakdown");
+
+        const locationCounts = {};
+
+        requests.forEach(request => {
+            const location =
+                String(request.location || "").trim() || "Unknown";
+
+            const key = location.toLowerCase();
+
+            if (locationCounts[key]) {
+                locationCounts[key].count++;
+            } else {
+                locationCounts[key] = {
+                    name: formatLocation(location),
+                    count: 1
+                };
+            }
+        });
+
+        const locations = Object.values(locationCounts)
+            .sort((a, b) => b.count - a.count);
+
+        const total = requests.length;
+
+        if (total === 0) {
+            container.innerHTML =
+                '<div class="empty">No location data available.</div>';
+            return;
+        }
+
+        container.innerHTML = locations.map(location => {
+            const percentage =
+                Math.round((location.count / total) * 100);
+
+            return `
+                <div>
+                    <div class="resource-top">
+                        <span>${escapeHTML(location.name)}</span>
+                        <span>${location.count} · ${percentage}%</span>
+                    </div>
+
+                    <div class="track">
+                        <div class="fill"
+                             style="width:${percentage}%">
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    // Show the five most recently created requests
+    function renderRecentActivity(requests) {
+        const container =
+            document.getElementById("recentActivity");
+
+        if (requests.length === 0) {
+            container.innerHTML =
+                '<div class="empty">No recent activity available.</div>';
+            return;
+        }
+
+        const recentRequests = [...requests]
+            .sort((a, b) =>
+                Number(b.request_id ?? b.id) -
+                Number(a.request_id ?? a.id)
+            )
+            .slice(0, 5);
+
+        container.innerHTML = `
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Request ID</th>
+                            <th>Resource</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        ${recentRequests.map(request => {
+                            const id = request.request_code ||
+                                `LL-${String(
+                                    request.request_id ?? request.id
+                                ).padStart(4, "0")}`;
+
+                            const status =
+                                request.status || "Pending";
+
+                            return `
+                                <tr>
+                                    <td class="request-id">
+                                        ${escapeHTML(id)}
+                                    </td>
+
+                                    <td>
+                                        ${escapeHTML(request.resource || "Unknown")}
+                                    </td>
+
+                                    <td>
+                                        ${escapeHTML(formatLocation(request.location || "Unknown"))}
+                                    </td>
+
+                                    <td>
+                                        <span class="status">
+                                            ${escapeHTML(status)}
+                                        </span>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join("")}
+                    </tbody>
+                </table>
+            </div>
+        `;
+    }
+
+    // Show only unresolved critical requests in this panel
+    function renderCriticalSummary(requests) {
+        const container =
+            document.getElementById("criticalSummary");
+
+        const criticalRequests = requests.filter(request =>
+            String(request.urgency || "").toLowerCase()
+                === "critical" &&
+            String(request.status || "").toLowerCase()
+                !== "resolved"
+        );
+
+        if (criticalRequests.length === 0) {
+            container.innerHTML =
+                '<div class="empty">No unresolved critical requests. All clear!</div>';
+            return;
+        }
+
+        container.innerHTML = criticalRequests.map(request => {
+            const id = request.request_code ||
+                `LL-${String(
+                    request.request_id ?? request.id
+                ).padStart(4, "0")}`;
+
+            return `
+                <div style="
+                    padding:15px;
+                    margin-bottom:12px;
+                    border:1px solid #e7c8d0;
+                    border-left:4px solid #c94c65;
+                    border-radius:10px;
+                    background:#fff7f8;
+                ">
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        gap:12px;
+                        flex-wrap:wrap;
+                    ">
+                        <strong>${escapeHTML(id)}</strong>
+                        <span style="color:#b83250;font-weight:600;">
+                            CRITICAL
+                        </span>
+                    </div>
+
+                    <p style="margin:10px 0 5px;">
+                        <strong>Resource:</strong>
+                        ${escapeHTML(request.resource || "Unknown")}
+                    </p>
+
+                    <p style="margin:5px 0;">
+                        <strong>Location:</strong>
+                        ${escapeHTML(formatLocation(request.location || "Unknown"))}
+                    </p>
+
+                    <p style="margin:5px 0 0;">
+                        <strong>Units needed:</strong>
+                        ${escapeHTML(String(request.units ?? "Unknown"))}
+                    </p>
+                </div>
+            `;
+        }).join("");
+    }
+
+    // Show the count for each urgency level
+    function renderPriorityOverview(requests) {
+        const container =
+            document.getElementById("priorityOverview");
+
+        const priorities = [
+            {
+                name: "Critical",
+                color: "#C94C65",
+                background: "#FFF0F3"
+            },
+            {
+                name: "High",
+                color: "#D9822B",
+                background: "#FFF5E8"
+            },
+            {
+                name: "Normal",
+                color: "#9272AB",
+                background: "#F5F0FA"
+            },
+            {
+                name: "Low",
+                color: "#398875",
+                background: "#EAF7F2"
+            }
+        ];
+
+        container.innerHTML = priorities.map(priority => {
+            const count = requests.filter(request =>
+                String(request.urgency || "").toLowerCase()
+                === priority.name.toLowerCase()
+            ).length;
+
+            return `
+                <div style="
+                    padding:20px;
+                    border-radius:12px;
+                    background:${priority.background};
+                    border:1px solid ${priority.color}33;
+                    text-align:center;
+                ">
+                    <div style="
+                        color:${priority.color};
+                        font-size:14px;
+                        font-weight:600;
+                    ">
+                        ${priority.name}
+                    </div>
+
+                    <div style="
+                        color:#34283F;
+                        font-size:30px;
+                        font-weight:700;
+                        margin-top:8px;
+                    ">
+                        ${count}
+                    </div>
+
+                    <div style="font-size:12px;color:#756A7D;">
+                        requests
+                    </div>
+                </div>
+            `;
+        }).join("");
+    }
+
+    // Smart Resource Matching: rank unresolved requests by urgency
+    function renderSmartMatching(requests) {
+        const container =
+            document.getElementById("smartMatching");
+
+        const priorityScores = {
+            critical: 4,
+            high: 3,
+            normal: 2,
+            low: 1
+        };
+
+        const rankedRequests = requests
+            .filter(request =>
+                String(request.status || "Pending").toLowerCase()
+                !== "resolved"
+            )
+            .map(request => {
+                const urgency =
+                    String(request.urgency || "Low").toLowerCase();
+
+                return {
+                    ...request,
+                    score: priorityScores[urgency] || 1
+                };
+            })
+            .sort((a, b) =>
+                b.score - a.score ||
+                Number(a.request_id ?? a.id) -
+                Number(b.request_id ?? b.id)
+            )
+            .slice(0, 5);
+
+        if (rankedRequests.length === 0) {
+            container.innerHTML =
+                '<div class="empty">No unresolved requests to prioritize.</div>';
+            return;
+        }
+
+        const reasons = {
+            critical:
+                "Highest urgency — immediate review recommended.",
+            high:
+                "High urgency — prioritize after critical requests.",
+            normal:
+                "Normal urgency — review after higher-priority requests.",
+            low:
+                "Low urgency — review after more urgent requests."
+        };
+
+        container.innerHTML = rankedRequests.map(request => {
+            const id = request.request_code ||
+                `LL-${String(
+                    request.request_id ?? request.id
+                ).padStart(4, "0")}`;
+
+            const urgency = String(request.urgency || "Low");
+            const urgencyKey = urgency.toLowerCase();
+
+            return `
+                <div style="
+                    padding:16px;
+                    margin-bottom:12px;
+                    border:1px solid #E8DDEF;
+                    border-left:4px solid #9272AB;
+                    border-radius:10px;
+                    background:#FBF8FE;
+                ">
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                        gap:10px;
+                        flex-wrap:wrap;
+                    ">
+                        <strong>${escapeHTML(id)}</strong>
+
+                        <span class="urgency ${escapeHTML(urgencyKey)}">
+                            ${escapeHTML(urgency)} Priority · Score ${request.score}/4
+                        </span>
+                    </div>
+
+                    <p style="margin-top:12px;font-size:13px;">
+                        <strong>Resource:</strong>
+                        ${escapeHTML(request.resource || "Unknown")}
+                    </p>
+
+                    <p style="margin-top:7px;font-size:13px;">
+                        <strong>Units:</strong>
+                        ${escapeHTML(String(request.units ?? "Unknown"))}
+                    </p>
+
+                    <p style="margin-top:7px;font-size:13px;">
+                        <strong>Location:</strong>
+                        ${escapeHTML(formatLocation(request.location || "Unknown"))}
+                    </p>
+
+                    <p style="
+                        margin-top:9px;
+                        color:#887993;
+                        font-size:12px;
+                    ">
+                        ${escapeHTML(
+                            reasons[urgencyKey] ||
+                            "Review this request according to its urgency."
+                        )}
+                    </p>
+                </div>
+            `;
+        }).join("");
+    }
+
+    // Escape API text before inserting it into HTML
+    function escapeHTML(value) {
+        return String(value).replace(/[&<>"']/g, character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        })[character]);
+    }
+
+    // Initial load and automatic refresh every 10 seconds
+    loadDashboard();
+    setInterval(loadDashboard, 10000);
+</script>
+
+</body>
+</html>

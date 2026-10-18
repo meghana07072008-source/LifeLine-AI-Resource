@@ -1,0 +1,1411 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLine AI | New Emergency Request</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --background: #F7F3FA;
+            --surface: #FFFFFF;
+            --primary: #9272AB;
+            --primary-dark: #76558F;
+            --plum: #4A315D;
+            --text: #382B40;
+            --muted: #8B8192;
+            --border: #E8DFEF;
+            --lavender: #EDE4F4;
+            --soft-purple: #F3ECF8;
+            --green: #55886A;
+            --red: #C93653;
+            --shadow: 0 8px 30px rgba(74, 49, 93, 0.07);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+            background: var(--plum);
+            color: white;
+            padding: 28px 18px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 10px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.13);
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+            background: #9272AB;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .brand-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-name span {
+            color: #D8BFEA;
+        }
+
+        .brand-subtitle {
+            color: #C9B8D5;
+            font-size: 10px;
+            margin-top: 5px;
+            letter-spacing: 1.2px;
+        }
+
+        .nav-heading {
+            font-size: 10px;
+            color: #BBA8C9;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin: 30px 12px 13px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            text-decoration: none;
+            color: #E0D5E8;
+            padding: 13px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 7px;
+            transition: 0.2s ease;
+        }
+
+        .nav-link i {
+            width: 18px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.09);
+            color: white;
+        }
+
+        .nav-link.active {
+            background: #9272AB;
+            color: white;
+            box-shadow: 0 5px 16px rgba(20, 10, 30, 0.15);
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding: 18px 12px 0;
+            border-top: 1px solid rgba(255,255,255,0.13);
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 12px;
+            color: #E4D9EA;
+        }
+
+        .status-dot {
+            height: 8px;
+            width: 8px;
+            background: #91D4A5;
+            border-radius: 50%;
+            box-shadow: 0 0 9px rgba(145,212,165,0.6);
+        }
+
+        .sidebar-note {
+            font-size: 10px;
+            color: #BBA8C9;
+            line-height: 1.7;
+            margin-top: 10px;
+        }
+
+        /* MAIN CONTENT */
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 30px 38px 40px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 32px;
+        }
+
+        .breadcrumb {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .breadcrumb span {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .page-title {
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            color: var(--text);
+        }
+
+        .page-subtitle {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+
+        .connection {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #E8F4EB;
+            color: var(--green);
+            border: 1px solid #D2E8D7;
+            border-radius: 30px;
+            padding: 10px 14px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .connection i {
+            font-size: 8px;
+        }
+
+        /* INTRO BANNER */
+
+        .welcome-banner {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            background: linear-gradient(115deg, #4A315D, #76558F 70%, #9272AB);
+            border-radius: 17px;
+            padding: 28px 32px;
+            color: white;
+            margin-bottom: 27px;
+            box-shadow: var(--shadow);
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+            max-width: 650px;
+        }
+
+        .eyebrow {
+            font-size: 10px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: #E3D2EF;
+            margin-bottom: 12px;
+        }
+
+        .welcome-banner h2 {
+            font-size: 22px;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .welcome-banner p {
+            color: #E8DDED;
+            font-size: 12px;
+            line-height: 1.8;
+            max-width: 550px;
+        }
+
+        .banner-icon {
+            width: 90px;
+            height: 90px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.10);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 43px;
+            color: #F1E7F8;
+            transform: rotate(5deg);
+        }
+
+        /* CONTENT GRID */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.65fr) minmax(250px, 0.85fr);
+            gap: 24px;
+            align-items: start;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-card {
+            padding: 27px;
+        }
+
+        .card-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .heading-icon {
+            width: 43px;
+            height: 43px;
+            background: var(--lavender);
+            color: var(--primary-dark);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .card-heading h3 {
+            font-size: 16px;
+            font-weight: 800;
+            margin: 3px 0 6px;
+        }
+
+        .card-heading p {
+            font-size: 11px;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+
+        .form-section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 17px;
+        }
+
+        .form-section-title i {
+            font-size: 13px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 19px 17px;
+            margin-bottom: 26px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            color: #55465E;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        .required {
+            color: var(--primary-dark);
+            margin-left: 3px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap > i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #A393B0;
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 46px;
+            border: 1px solid #E4DAEB;
+            border-radius: 9px;
+            padding: 0 13px 0 39px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text);
+            background: #FCFAFD;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        input::placeholder {
+            color: #B3A8BC;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(146,114,171,0.13);
+            background: white;
+        }
+
+        .field-help {
+            color: #9A8DA2;
+            font-size: 10px;
+            margin-top: 7px;
+            line-height: 1.5;
+        }
+
+        .urgency-options {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 9px;
+        }
+
+        .urgency-option {
+            position: relative;
+        }
+
+        .urgency-option input {
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+        }
+
+        .urgency-option label {
+            min-height: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 5px;
+            margin: 0;
+            background: #FCFAFD;
+            border: 1px solid #E4DAEB;
+            border-radius: 9px;
+            color: #76677F;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .urgency-option label i {
+            font-size: 10px;
+        }
+
+        .urgency-option input:checked + label {
+            background: var(--lavender);
+            border-color: var(--primary);
+            color: var(--plum);
+            box-shadow: 0 0 0 2px rgba(146,114,171,0.08);
+        }
+
+        .urgency-option input:focus-visible + label {
+            outline: 2px solid var(--primary);
+            outline-offset: 3px;
+        }
+
+        .form-footer {
+            border-top: 1px solid var(--border);
+            padding-top: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .secure-note {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .secure-note i {
+            color: var(--green);
+        }
+
+        .submit-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 46px;
+            border: none;
+            border-radius: 9px;
+            padding: 0 21px;
+            color: white;
+            background: var(--primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 13px rgba(118,85,143,0.2);
+            transition: 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 7px 17px rgba(118,85,143,0.25);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.65;
+            cursor: wait;
+            transform: none;
+        }
+
+        /* RIGHT SIDE */
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-card {
+            padding: 23px;
+        }
+
+        .side-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 21px;
+        }
+
+        .side-title i {
+            color: var(--primary);
+        }
+
+        .step {
+            display: flex;
+            gap: 13px;
+            margin-bottom: 20px;
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-number {
+            width: 31px;
+            height: 31px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: var(--lavender);
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .step h4 {
+            font-size: 11px;
+            margin: 2px 0 6px;
+        }
+
+        .step p {
+            font-size: 10px;
+            line-height: 1.7;
+            color: var(--muted);
+        }
+
+        .priority-card {
+            background: #F0E8F6;
+            border: 1px solid #E4D7EF;
+            border-radius: 15px;
+            padding: 22px;
+        }
+
+        .priority-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--plum);
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .priority-heading i {
+            font-size: 17px;
+        }
+
+        .priority-card p {
+            color: #74627F;
+            font-size: 11px;
+            line-height: 1.8;
+        }
+
+        .priority-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .priority-list li {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 10px;
+            color: #675273;
+            margin-top: 11px;
+        }
+
+        .priority-list i {
+            width: 15px;
+            color: var(--primary-dark);
+        }
+
+        .contact-card {
+            padding: 21px;
+            border: 1px dashed #CDBBDD;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.65);
+        }
+
+        .contact-card h4 {
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .contact-card p {
+            font-size: 10px;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        /* FEEDBACK MESSAGE */
+
+        .message {
+            display: none;
+            padding: 14px 16px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .message.success {
+            display: block;
+            background: #E8F4EB;
+            color: #356D49;
+            border: 1px solid #CDE6D3;
+        }
+
+        .message.error {
+            display: block;
+            background: #F8EAF0;
+            color: #963A56;
+            border: 1px solid #EED0DA;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 27px 0 5px;
+            color: #9B8FA3;
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        .footer span {
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1100px) {
+            .main {
+                padding: 27px 24px;
+            }
+
+            .content-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .right-column {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: start;
+            }
+
+            .contact-card {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                padding: 17px;
+            }
+
+            .brand {
+                padding-bottom: 16px;
+            }
+
+            .nav-heading,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .sidebar nav {
+                display: flex;
+                gap: 7px;
+                overflow-x: auto;
+                padding-top: 14px;
+            }
+
+            .nav-link {
+                flex-shrink: 0;
+                margin: 0;
+                padding: 11px 12px;
+                font-size: 11px;
+            }
+
+            .nav-link i {
+                font-size: 13px;
+            }
+
+            .main {
+                padding: 24px 17px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+                margin-bottom: 24px;
+            }
+
+            .page-title {
+                font-size: 23px;
+            }
+
+            .welcome-banner {
+                padding: 23px;
+            }
+
+            .welcome-banner h2 {
+                font-size: 19px;
+            }
+
+            .banner-icon {
+                width: 62px;
+                height: 62px;
+                font-size: 29px;
+                border-radius: 18px;
+            }
+
+            .form-card {
+                padding: 21px 17px;
+            }
+
+            .right-column {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-card {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .welcome-banner {
+                padding: 20px;
+            }
+
+            .banner-icon {
+                display: none;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 17px;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .urgency-options {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-footer {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+
+            <div>
+                <div class="brand-name">LifeLine <span>AI</span></div>
+                <div class="brand-subtitle">EMERGENCY INTELLIGENCE</div>
+            </div>
+        </div>
+
+        <div class="nav-heading">MAIN MENU</div>
+
+        <nav>
+            <a href="dashboard.html" class="nav-link">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Command Center</span>
+            </a>
+
+            <a href="index.html" class="nav-link active">
+                <i class="fa-solid fa-plus-circle"></i>
+                <span>New Emergency Request</span>
+            </a>
+
+            <a href="requests.html" class="nav-link">
+                <i class="fa-solid fa-clipboard-list"></i>
+                <span>Request Registry</span>
+            </a>
+
+            <a href="dashboard.html#analytics" class="nav-link">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Resource Analytics</span>
+            </a>
+
+            <a href="http://127.0.0.1:8000/docs" target="_blank" rel="noopener" class="nav-link">
+                <i class="fa-solid fa-code"></i>
+                <span>API Services</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="system-status">
+                <span class="status-dot"></span>
+                <span>Emergency Network</span>
+            </div>
+
+            <p class="sidebar-note">
+                Coordinating emergency resource requests through one connected system.
+            </p>
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">
+                    LifeLine AI &nbsp; / &nbsp; <span>New Emergency Request</span>
+                </div>
+
+                <h1 class="page-title">Emergency Request</h1>
+
+                <p class="page-subtitle">
+                    Submit an emergency resource requirement to the LifeLine AI network.
+                </p>
+            </div>
+
+            <div class="connection" id="connectionStatus">
+                <i class="fa-solid fa-circle"></i>
+                <span>Checking connection...</span>
+            </div>
+        </header>
+
+        <!-- WELCOME BANNER -->
+        <section class="welcome-banner">
+            <div class="welcome-content">
+                <div class="eyebrow">THE EMERGENCY RESOURCE NETWORK</div>
+
+                <h2>The right resource. The right place. The right time.</h2>
+
+                <p>
+                    Record emergency needs, identify urgency, and keep resource
+                    requests organized through a connected information system.
+                </p>
+            </div>
+
+            <div class="banner-icon">
+                <i class="fa-solid fa-hand-holding-medical"></i>
+            </div>
+        </section>
+
+        <div id="formMessage" class="message" role="status" aria-live="polite"></div>
+
+        <div class="content-grid">
+
+            <!-- REQUEST FORM -->
+            <section class="card form-card">
+
+                <div class="card-heading">
+                    <div class="heading-icon">
+                        <i class="fa-solid fa-file-circle-plus"></i>
+                    </div>
+
+                    <div>
+                        <h3>Create a Resource Request</h3>
+                        <p>Enter the required information in the fields below.</p>
+                    </div>
+                </div>
+
+                <form id="requestForm">
+
+                    <div class="form-section-title">
+                        <i class="fa-solid fa-clipboard-check"></i>
+                        Resource Information
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="field">
+                            <label for="resource">
+                                Resource Type <span class="required">*</span>
+                            </label>
+
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-box-medical"></i>
+
+                                <select id="resource" name="resource" required>
+                                    <option value="">Select resource</option>
+                                    <option value="Blood">Blood</option>
+                                    <option value="Medical Supplies">Medical Supplies</option>
+                                    <option value="Ambulance">Ambulance</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="field" id="bloodGroupField">
+                            <label for="blood_group">
+                                Blood Group
+                            </label>
+
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-droplet"></i>
+
+                                <select id="blood_group" name="blood_group">
+                                    <option value="">Select blood group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+
+                            <p class="field-help">Required only when Blood is selected.</p>
+                        </div>
+
+                        <div class="field">
+                            <label for="units">
+                                Quantity / Units <span class="required">*</span>
+                            </label>
+
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+
+                                <input
+                                    type="number"
+                                    id="units"
+                                    name="units"
+                                    min="1"
+                                    step="1"
+                                    value="1"
+                                    required
+                                    placeholder="Enter quantity"
+                                >
+                            </div>
+
+                            <p class="field-help">Enter a whole number greater than zero.</p>
+                        </div>
+
+                        <div class="field">
+                            <label for="location">
+                                Location <span class="required">*</span>
+                            </label>
+
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-location-dot"></i>
+
+                                <input
+                                    type="text"
+                                    id="location"
+                                    name="location"
+                                    required
+                                    minlength="2"
+                                    maxlength="150"
+                                    placeholder="Enter city or area"
+                                >
+                            </div>
+
+                            <p class="field-help">Enter the area where the resource is needed.</p>
+                        </div>
+
+                    </div>
+
+                    <div class="form-section-title">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        Emergency Priority
+                    </div>
+
+                    <div class="field full" style="margin-bottom: 27px;">
+
+                        <label>
+                            Urgency Level <span class="required">*</span>
+                        </label>
+
+                        <div class="urgency-options">
+
+                            <div class="urgency-option">
+                                <input
+                                    type="radio"
+                                    id="urgencyCritical"
+                                    name="urgency"
+                                    value="Critical"
+                                    required
+                                >
+                                <label for="urgencyCritical">
+                                    <i class="fa-solid fa-bolt"></i>
+                                    Critical
+                                </label>
+                            </div>
+
+                            <div class="urgency-option">
+                                <input
+                                    type="radio"
+                                    id="urgencyHigh"
+                                    name="urgency"
+                                    value="High"
+                                >
+                                <label for="urgencyHigh">
+                                    <i class="fa-solid fa-arrow-up"></i>
+                                    High
+                                </label>
+                            </div>
+
+                            <div class="urgency-option">
+                                <input
+                                    type="radio"
+                                    id="urgencyNormal"
+                                    name="urgency"
+                                    value="Normal"
+                                    checked
+                                >
+                                <label for="urgencyNormal">
+                                    <i class="fa-solid fa-minus"></i>
+                                    Normal
+                                </label>
+                            </div>
+
+                            <div class="urgency-option">
+                                <input
+                                    type="radio"
+                                    id="urgencyLow"
+                                    name="urgency"
+                                    value="Low"
+                                >
+                                <label for="urgencyLow">
+                                    <i class="fa-solid fa-arrow-down"></i>
+                                    Low
+                                </label>
+                            </div>
+
+                        </div>
+
+                        <p class="field-help">
+                            Choose the priority that best describes the request.
+                        </p>
+
+                    </div>
+
+                    <div class="form-footer">
+
+                        <div class="secure-note">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            Request data is submitted to the connected backend.
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="submitBtn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Submit Request</span>
+                        </button>
+
+                    </div>
+
+                </form>
+            </section>
+
+            <!-- INFORMATION PANEL -->
+            <aside class="right-column">
+
+                <section class="card info-card">
+
+                    <h3 class="side-title">
+                        <i class="fa-solid fa-list-check"></i>
+                        How It Works
+                    </h3>
+
+                    <div class="step">
+                        <div class="step-number">01</div>
+                        <div>
+                            <h4>Enter Resource Details</h4>
+                            <p>
+                                Select the required resource, quantity, and
+                                location for the emergency.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">02</div>
+                        <div>
+                            <h4>Set the Urgency</h4>
+                            <p>
+                                Choose a priority level so the request can be
+                                organized according to its urgency.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">03</div>
+                        <div>
+                            <h4>Submit and Track</h4>
+                            <p>
+                                The request is saved in the database and can
+                                be viewed in the Request Registry.
+                            </p>
+                        </div>
+                    </div>
+
+                </section>
+
+                <section class="priority-card">
+
+                    <h3 class="priority-heading">
+                        <i class="fa-solid fa-shield-heart"></i>
+                        Priority Awareness
+                    </h3>
+
+                    <p>
+                        Accurate information helps the network organize
+                        emergency requests more effectively.
+                    </p>
+
+                    <ul class="priority-list">
+                        <li>
+                            <i class="fa-solid fa-bolt"></i>
+                            Critical — immediate attention needed
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-arrow-up"></i>
+                            High — urgent requirement
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-minus"></i>
+                            Normal — standard priority
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-arrow-down"></i>
+                            Low — lower priority requirement
+                        </li>
+                    </ul>
+
+                </section>
+
+                <section class="contact-card">
+                    <h4>
+                        <i class="fa-solid fa-circle-info" style="color: #9272AB;"></i>
+                        Important Information
+                    </h4>
+
+                    <p>
+                        LifeLine AI is a resource-request management project.
+                        Submitting a request does not itself dispatch an
+                        ambulance or guarantee resource availability.
+                    </p>
+                </section>
+
+            </aside>
+
+        </div>
+
+        <footer class="footer">
+            <span>LifeLine AI</span> — The Emergency Resource Intelligence Network
+            <br>
+            The right resource. The right place. The right time.
+        </footer>
+
+    </main>
+
+</div>
+
+<script>
+    const API_URL = "http://127.0.0.1:8000";
+
+    const form = document.getElementById("requestForm");
+    const resourceSelect = document.getElementById("resource");
+    const bloodGroupSelect = document.getElementById("blood_group");
+    const bloodGroupField = document.getElementById("bloodGroupField");
+    const submitBtn = document.getElementById("submitBtn");
+    const formMessage = document.getElementById("formMessage");
+    const connectionStatus = document.getElementById("connectionStatus");
+
+    // Show the blood group field only for Blood requests.
+    function updateBloodGroupField() {
+        const isBlood = resourceSelect.value === "Blood";
+
+        bloodGroupField.style.display = isBlood ? "block" : "none";
+        bloodGroupSelect.required = isBlood;
+
+        if (!isBlood) {
+            bloodGroupSelect.value = "";
+        }
+    }
+
+    resourceSelect.addEventListener("change", updateBloodGroupField);
+    updateBloodGroupField();
+
+    // Check whether the backend is available.
+    async function checkConnection() {
+        try {
+            const response = await fetch(API_URL + "/");
+
+            if (!response.ok) {
+                throw new Error("Backend is unavailable");
+            }
+
+            connectionStatus.innerHTML =
+                '<i class="fa-solid fa-circle"></i><span>Backend Connected</span>';
+
+        } catch (error) {
+            connectionStatus.innerHTML =
+                '<i class="fa-solid fa-circle"></i><span>Backend Offline</span>';
+
+            connectionStatus.style.background = "#F8EAF0";
+            connectionStatus.style.color = "#963A56";
+            connectionStatus.style.borderColor = "#EED0DA";
+        }
+    }
+
+    function showMessage(type, message) {
+        formMessage.className = "message " + type;
+        formMessage.textContent = message;
+        formMessage.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest"
+        });
+    }
+
+    // Submit the emergency request to FastAPI.
+    form.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const resource = resourceSelect.value;
+        const bloodGroup = bloodGroupSelect.value;
+        const units = Number(document.getElementById("units").value);
+        const location = document.getElementById("location").value.trim();
+        const urgency = document.querySelector(
+            'input[name="urgency"]:checked'
+        )?.value;
+
+        if (!resource || !location || !urgency) {
+            showMessage("error", "Please complete all required fields.");
+            return;
+        }
+
+        if (!Number.isInteger(units) || units < 1) {
+            showMessage("error", "Quantity must be a whole number greater than zero.");
+            return;
+        }
+
+        if (location.length < 2) {
+            showMessage("error", "Please enter a valid location.");
+            return;
+        }
+
+        if (resource === "Blood" && !bloodGroup) {
+            showMessage("error", "Please select a blood group.");
+            return;
+        }
+
+        const requestData = {
+    resource: resource,
+    blood_group: resource === "Blood" ? bloodGroup : "",
+    units: units,
+    location: location,
+    urgency: urgency
+};
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML =
+            '<i class="fa-solid fa-spinner fa-spin"></i><span>Submitting...</span>';
+
+        formMessage.className = "message";
+        formMessage.textContent = "";
+
+        try {
+            const response = await fetch(API_URL + "/request", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                let errorText = "Unable to submit the request.";
+
+                if (result.detail) {
+                    if (Array.isArray(result.detail)) {
+                        errorText = result.detail
+                            .map(item => item.msg || "Invalid input")
+                            .join(". ");
+                    } else {
+                        errorText = result.detail;
+                    }
+                }
+
+                throw new Error(errorText);
+            }
+
+            showMessage(
+                "success",
+                "Emergency request submitted successfully! Your request has been saved. Open the Request Registry or Dashboard to view the updated information."
+            );
+
+            form.reset();
+            updateBloodGroupField();
+            document.getElementById("units").value = 1;
+            document.getElementById("urgencyNormal").checked = true;
+
+            checkConnection();
+
+        } catch (error) {
+            showMessage(
+                "error",
+                error.message.includes("Failed to fetch")
+                    ? "Could not connect to the backend. Make sure the FastAPI server is running, then try again."
+                    : error.message
+            );
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML =
+                '<i class="fa-solid fa-paper-plane"></i><span>Submit Request</span>';
+        }
+    });
+
+    checkConnection();
+</script>
+
+</body>
+</html>
