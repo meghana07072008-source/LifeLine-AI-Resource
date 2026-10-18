@@ -32,13 +32,37 @@ export default async (req) => {
     };
 
     try {
+        // GET: Retrieve emergency requests for the dashboard
         if (req.method === "GET") {
+            const response = await fetch(
+                `${supabaseUrl}/rest/v1/emergency_requests?select=*&order=id.desc`,
+                {
+                    method: "GET",
+                    headers: dbHeaders
+                }
+            );
+
+            const requests = await response.json();
+
+            if (!response.ok) {
+                console.error("Database fetch failed:", requests);
+                return Response.json(
+                    { detail: "Could not load emergency requests." },
+                    { status: 500, headers }
+                );
+            }
+
             return Response.json(
-                { message: "LifeLine AI API is running" },
+                {
+                    message: "LifeLine AI API is running",
+                    requests: requests,
+                    total_requests: requests.length
+                },
                 { status: 200, headers }
             );
         }
 
+        // POST: Save a new emergency request
         const body = await req.json();
 
         const allowedResources = [
@@ -48,7 +72,10 @@ export default async (req) => {
         ];
 
         const allowedUrgencies = [
-            "Critical", "High", "Normal", "Low"
+            "Critical",
+            "High",
+            "Normal",
+            "Low"
         ];
 
         const units = Number(body.units);
@@ -61,9 +88,11 @@ export default async (req) => {
             location.length < 2 ||
             location.length > 150 ||
             !allowedUrgencies.includes(body.urgency) ||
-            (body.resource === "Blood" &&
+            (
+                body.resource === "Blood" &&
                 !["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
-                    .includes(body.blood_group))
+                    .includes(body.blood_group)
+            )
         ) {
             return Response.json(
                 { detail: "Please check the request details." },
@@ -115,14 +144,22 @@ export default async (req) => {
                     ...dbHeaders,
                     "Prefer": "return=minimal"
                 },
-                body: JSON.stringify({ request_code: requestCode })
+                body: JSON.stringify({
+                    request_code: requestCode
+                })
             }
         );
 
         if (!updateResponse.ok) {
-            console.error("Request code update failed:", await updateResponse.text());
+            console.error(
+                "Request code update failed:",
+                await updateResponse.text()
+            );
+
             return Response.json(
-                { detail: "Request saved, but its tracking code could not be assigned." },
+                {
+                    detail: "Request saved, but its tracking code could not be assigned."
+                },
                 { status: 500, headers }
             );
         }
@@ -140,6 +177,7 @@ export default async (req) => {
 
     } catch (error) {
         console.error("Request function error:", error);
+
         return Response.json(
             { detail: "An unexpected error occurred." },
             { status: 500, headers }
